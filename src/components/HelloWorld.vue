@@ -1,58 +1,151 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+
+  <h1>Hatsune Miku Fun Facts</h1>
+
+  <div class="container">
+
+    <div
+      v-for="(card, index) in cards"
+      :key="index"
+      class="card"
+      @click="flipCard(index)"
+    >
+
+      <div :class="['card-inner', { flipped: card.flipped }]">
+        <div class="card-face card-front">
+          <Card>
+            <p>{{ card.description }}</p>
+          </Card>
+        </div>
+        <div class="card-face card-back">
+          <p>{{ card.backInfo }}</p>
+        </div>
+      </div>
+
+    </div>
+
   </div>
+
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
+  data() {
+    return {
+      cards: [
+        {
+          description: "What does Hatsune Miku Mean?",
+          backInfo: "The name of the character comes from merging the Japanese words for first (初, hatsu), sound (音, ne), and future (ミク, miku), thus meaning 'the first sound of the future',[2] which, along with her code name, refers to her position as the first of Crypton's 'Character Vocal Series' (abbreviated 'CV Series').",
+          flipped: false
+        },
+        {
+          description: "What is Miku's Representative Vegteable?",
+          backInfo: "Leek",
+          flipped: false
+        },
+        {
+          description: "Who is Hatsune Miku?",
+          backInfo: "Hatsune Miku is a Vocaloid software voicebank developed by Crypton Future Media.",
+          flipped: false
+        },
+        {
+          description: "What does Hatsune Miku do?",
+          backInfo: "Miku's personification has been marketed as a virtual idol, and has performed at live virtual concerts onstage as an animated holographic projection",
+          flipped: false
+        },
+        {
+          description: "How old is Hatsune Miku?",
+          backInfo: "Hatsune Miku is most commonly depicted as a 16 year old girl. She does not age.",
+          flipped: false
+        },
+        {
+          description: "When was Hatsune Miku released?",
+          backInfo: "August 31, 2007",
+          flipped: false
+        },
+        {
+          description: "How many versions of Miku's voicebank are there?",
+          backInfo: "There are 10 total, with Hatsune Miku SP, a refined and retuned version of her original VOCALOID4 (V4X) voicebank, being the most recent.",
+          flipped: false
+        },
+        {
+          description: "What is Miku Miku Beam?",
+          backInfo: "Miku Miku Beam is an emote in Fortnite, referencing a scene from the music video for 'M@GICAL☆CURE! LOVE ♥ SHOT!' by Sawtowne featuring Hatsune Miku.",
+          flipped: false
+        },
+      ]
+    };
+  },
+  methods: {
+    flipCard(index) {
+      this.cards[index].flipped = !this.cards[index].flipped;
+    }
   }
-}
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+/* main container */
+.container {
+  grid-template-columns: repeat(4, 1fr);
+  justify-items: center; 
+  align-items: center;  
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; 
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+
+/* container for cards */
+.card {
+  border-radius: 10px;
+  width: 300px;
+  height: 300px;
+  perspective: 1000px;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
+
+.card-inner {
+  position: relative;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
 }
-a {
-  color: #42b983;
+
+.card:hover .card-inner,
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+/* front of card */
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card-front {
+  padding:10px;
+  border-radius: 10px;
+  border: 1px solid #7acbdc;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* back of card */
+.card-back {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #7acbdc;
+  color: white;
+  background-color: #7acbdc;
+  transform: rotateY(180deg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
